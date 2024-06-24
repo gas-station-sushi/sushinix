@@ -34,6 +34,4 @@
     style = "kvantum";
     platformTheme = "lxqt";
   };
-  environment.variables = {
-  };
 }

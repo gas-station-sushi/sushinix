@@ -10,7 +10,7 @@
     systemd.enable = true;
     wrapperFeatures.gtk = true;
     extraConfigEarly = "include catppuccin-mocha";
-    config = rec {
+    config = {
       terminal = "kitty";
       menu = "fuzzel";
       modifier = "Mod4";
@@ -77,6 +77,7 @@
     };
   };
   programs.fuzzel.enable = true;
+
   programs.kitty = {
     enable = true;
     theme = "Catppuccin-Mocha";
@@ -104,20 +105,13 @@
     };
   };
 
-  xfconf.settings = {
-    xfce4-session = {
-      "/sessions/Failsafe/Client0_Command" = "-n -a -t string -s \"sway\"";
-    };
-  };
-
-  services = {
-    ssh-agent.enable = true;
-  };
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
-  home.username = "sushinix";
-  home.homeDirectory = "/home/sushinix";
-  home.stateVersion = "24.05"; # Please read the comment before changing.
+  home = {
+    username = "sushinix";
+    homeDirectory = "/home/sushinix";
+    stateVersion = "24.05";
+  };
 
   # The home.packages option allows you to install Nix packages into your
   # environment.

@@ -15,9 +15,11 @@
   networking = {
     hostName = "sushinix";
     networkmanager.enable = true;
-    firewall.allowedTCPPorts = [62177 32400 53266];
-    firewall.allowedUDPPorts = [62177 32400 53266];
-    firewall.enable = true;
+    firewall = {
+      allowedTCPPorts = [32400 53266];
+      allowedUDPPorts = [32400 53266];
+      enable = true;
+    };
     nftables.enable = true;
   };
   virtualisation.libvirtd.enable = true;
@@ -48,9 +50,8 @@
 
   #--- MY CONFIG ---
 
-  location.longitude = -101.9251;
-  location.latitude = 21.3721;
-  environment.variables = {SUDO_EDITOR = "kate sudoedit <file>";};
+  location.longitude = ;
+  location.latitude = ;
 
   ## Services
   services = {
@@ -96,10 +97,6 @@
     firefox.enable = true;
     steam.enable = true;
     virt-manager.enable = true;
-    ## sway
-    #   sway.enable = true;
-    #   waybar.enable = true;
-    #   sway.xwayland.enable = true;
   };
 
   ## Packages
@@ -122,8 +119,6 @@
       speedtest-cli
       cmake
       timeshift
-      dxvk
-      rocmPackages.clr
     ];
     ## script to generate list with installed packages in /etc/current-system-packages
     etc."current-system-packages".text = let
@@ -149,12 +144,5 @@
       })
     ];
   };
-  # Open ports in the firewall.
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.05"; # Did you read the comment?
+  system.stateVersion = "24.05";
 }
