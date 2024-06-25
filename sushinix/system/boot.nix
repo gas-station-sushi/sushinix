@@ -35,7 +35,6 @@
        pulse.enable = true;
        jack.enable = true;
      };
-   getty.autologinUser = "sushinix";
    "${dm}".sddm = {
      enable = true;
      wayland.enable = true;
