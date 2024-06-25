@@ -36,7 +36,7 @@
     settings.experimental-features = ["nix-command" "flakes"];
     nixPath = [
    "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
-   "nixos-config=/home/sushinix/.config/sushinix/sushi.nix"
+   "nixos-config=/home/sushinix/nigiri/sushi.nix"
    "/nix/var/nix/profiles/per-user/root/channels"];
   };
 
