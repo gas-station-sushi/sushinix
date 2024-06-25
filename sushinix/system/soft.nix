@@ -21,7 +21,6 @@
     unzip
     pavucontrol
     krita
-    hyfetch
     nicotine-plus
     speedtest-cli
     cmake
