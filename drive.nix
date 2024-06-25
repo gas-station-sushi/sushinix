@@ -1,12 +1,12 @@
 {
   fileSystems."swap" = {
     label = "swap";
-    device = "UUID=a389e90e-72f2-4ca8-896e-9754bc5218d5";
+    device = "UUID=93bde98e-ceef-4840-b025-c8629b319afe";
     fsType = "swap";
     options = ["nofail"];
   };
 
-  fileSystems."/drive/hdd" = {
+  fileSystems."/drive/hdd0" = {
     device = "UUID=188E4F328E4F07A8";
     fsType = "ntfs";
     options = [

@@ -7,59 +7,96 @@
   ...
 }: {
   imports = [
+    # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ./xfce-catppuccin.nix
     ./drive.nix
-    ./AMDAMD.nix
   ];
-  networking = {
-    hostName = "sushinix";
-    networkmanager.enable = true;
-    firewall = {
-      allowedTCPPorts = [32400 53266];
-      allowedUDPPorts = [32400 53266];
-      enable = true;
-    };
-    nftables.enable = true;
-  };
-  virtualisation.libvirtd.enable = true;
 
+  # Bootloader.
+  boot.loader.grub.enable = true;
+  boot.loader.grub.device = "nodev";
+  boot.loader.efi.canTouchEfiVariables = true;
+  boot.supportedFilesystems = ["ntfs"];
+  networking.hostName = "sushinix"; # Define your hostname.
+  networking.networkmanager.enable = true;
+
+  # Set your time zone.
   time.timeZone = "America/Mexico_City";
-  i18n.defaultLocale = "es_MX.UTF-8";
+
+  # Select internationalisation properties.
+  i18n.defaultLocale = "en_US.UTF-8";
 
   # Configure keymap in X11
   services.xserver = {
-    layout = "latam";
-    xkbVariant = "";
     enable = true;
+    layout = "us";
+    xkbVariant = "";
+    desktopManager.wallpaper.mode = "~/bg.png";
   };
 
-  # Configure console keymap
-  console.keyMap = "la-latin1";
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
-
+  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.sushinix = {
     isNormalUser = true;
-    description = "sushi";
+    description = "sushinix";
     extraGroups = ["networkmanager" "wheel"];
+    packages = with pkgs; [];
+  };
+  services = {
+    getty.autologinUser = "sushinix";
+    displayManager.sddm = {
+     enable = true;
+     theme = "catppuccin-sddm";};
+    desktopManager.plasma6.enable = true;
+  };
+  programs = {
+    git.enable = true;
+    firefox.enable = true;
+    neovim.enable = true;
+    steam.enable = true;
+    dconf.enable = true;
   };
 
-  # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+  environment.systemPackages = with pkgs; [
+    hyfetch
+    wineWowPackages.full
+    winetricks
+    vlc
+    wget
+    zip
+    unzip
+    pavucontrol
+    krita
+    hyfetch
+    nicotine-plus
+    speedtest-cli
+    cmake
+    timeshift
+    mesa-demos
+    vulkan-tools
+    (catppuccin-sddm.override {
+     flavor = "mocha";
+     loginBackground = true; })
+  ];
+
 
   #--- MY CONFIG ---
 
-  location.longitude = ;
-  location.latitude = ;
-
+  #location.longitude = ;
+  #location.latitude = ;
+  hardware = {
+   opengl = {
+    enable = true;
+    driSupport32Bit = true;
+    };
+    pulseaudio.enable = false;
+    };
+    boot.initrd.kernelModules = ["amdgpu"];
   ## Services
   services = {
     locate.enable = true;
     resolved.enable = true;
     printing.enable = true;
-    redshift.enable = true;
-    geoclue2.enable = true;
     flatpak.enable = true;
     sonarr.enable = true;
     radarr.enable = true;
@@ -73,7 +110,6 @@
       jack.enable = true;
     };
   };
-
   security.rtkit.enable = true;
   security.polkit.enable = true;
   ## Nix
@@ -81,57 +117,6 @@
     optimise.automatic = true;
     optimise.dates = ["07:00"];
     settings.experimental-features = ["nix-command" "flakes"];
-  };
-
-  ## Boot
-  boot = {
-    loader.systemd-boot.enable = true;
-    loader.efi.canTouchEfiVariables = true;
-    supportedFilesystems = ["ntfs"];
-  };
-
-  ## Programs
-
-  programs = {
-    neovim.enable = true;
-    firefox.enable = true;
-    steam.enable = true;
-    virt-manager.enable = true;
-  };
-
-  ## Packages
-  environment = {
-    systemPackages = with pkgs; [
-      thunderbird
-      wineWowPackages.full
-      winetricks
-      vlc
-      wget
-      zip
-      unzip
-      python3
-      xdg-desktop-portal-gtk
-      pavucontrol
-      krita
-      hyfetch
-      nicotine-plus
-      kdiskmark
-      speedtest-cli
-      cmake
-      timeshift
-    ];
-    ## script to generate list with installed packages in /etc/current-system-packages
-    etc."current-system-packages".text = let
-      packages = builtins.map (p: "${p.name}") config.environment.systemPackages;
-      sortedUnique = builtins.sort builtins.lessThan (pkgs.lib.lists.unique packages);
-      formatted = builtins.concatStringsSep "\n" sortedUnique;
-    in
-      formatted;
-  };
-  ## Portals
-  systemd.user.services.xdg-desktop-portal-gtk = {
-    wantedBy = ["xdg-desktop-portal.service"];
-    before = ["xdg-desktop-portal.service"];
   };
   xdg.portal = {
     xdgOpenUsePortal = true;
@@ -144,5 +129,12 @@
       })
     ];
   };
-  system.stateVersion = "24.05";
+
+  # This value determines the NixOS release from which the default
+  # settings for stateful data, like file locations and database versions
+  # on your system were taken. It‘s perfectly fine and recommended to leave
+  # this value at the release version of the first install of this system.
+  # Before changing this value read the documentation for this option
+  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+  system.stateVersion = "24.05"; # Did you read the comment?
 }
