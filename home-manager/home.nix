@@ -1,46 +1,20 @@
-{ config, pkgs, catppuccin, ... }:
+{ config, pkgs, ... }:
 
 {
- imports = [./flavor.nix];
+ imports = [./mod/flavor.nix ./mod/program.nix];
   home = {
    username = "sushinix";
    stateVersion = "24.05";
    homeDirectory = "/home/sushinix";};
 
-programs = {
-   home-manager.enable = true;
-   kitty = {
-     enable = true;
-     theme = "Catppuccin-Mocha";
-     settings = {
-       linux_display_server = "x11";
-       tab_bar_min_tabs = 1;
-       tab_bar_edge = "bottom";
-       tab_bar_style = "powerline";
-       tab_powerline_style = "slanted";
-       initial_window_width = "85c";
-       initial_window_height = "25c";
-       remember_window_size = false;};
-  };
-  bash = {
-    enable = true;
-    enableCompletion = true;
-    shellAliases = {
-      getchvim = "sudo nix run github:getchoo/getchvim";
-      homeswitch = "home-manager switch";
-      nixswitch = "sudo nixos-rebuild switch";
-      homebuild = "home-manager build";
-      nixbuild = "sudo nixos-rebuild switch";};
-  };
- };
-
-
+nixpkgs.config.allowUnfree = true;
 
 home.packages = with pkgs; [
     kid3
     qbittorrent
     heroic
     libreoffice-fresh
+    nil
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
